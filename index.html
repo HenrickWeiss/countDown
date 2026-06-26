@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Völlig bedeutungsloser Countdown hust</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            
+            /* HINTERGRUNDBILD-PLATZHALTER */
+            /* Ersetze 'dein-bild.jpg' mit dem Pfad oder Link zu deinem Wunschbild */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('FriederikeJan.jpeg') no-repeat center center fixed;
+            background-size :contain;
+            
+            /* Falls das Bild nicht lädt, wird dieser romantische Farbverlauf angezeigt: */
+            background-color: #f7d6d0; 
+        }
+
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.85); /* Halbtransparentes Weiß, damit das Hintergrundbild durchschimmert */
+            padding: 40px 30px;
+            /* Weicher, romantischer Border-Radius */
+            border-radius: 25px; 
+            box-shadow: 0 10px 30px rgba(224, 131, 147, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(5px); /* Macht den Hintergrund hinter der Box leicht unscharf */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            color: #d1516e; /* Edler Rosé-Rotton */
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .hearts {
+            color: #e84366;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite; /* Das Herz pocht leicht */
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Styling für die Zeitelemente */
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            background: #fff5f6;
+            padding: 15px;
+            border-radius: 15px; /* Weiche Ecken für die kleinen Boxen */
+            min-width: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #fad3d8;
+        }
+
+        .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #b53753;
+            display: block;
+        }
+
+        .label {
+            font-size: 0.8em;
+            color: #8c7679;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .message {
+            font-size: 1.1em;
+            color: #6e5458;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="countdown-container">
+    <h1>Bald ist es soweit...</h1>
+    <div class="hearts">❤️ ✨ ❤️</div>
+    
+    <div class="timer">
+        <div class="box">
+            <span class="number" id="days">00</span>
+            <span class="label">Tage</span>
+        </div>
+        <div class="box">
+            <span class="number" id="hours">00</span>
+            <span class="label">Std</span>
+        </div>
+        <div class="box">
+            <span class="number" id="minutes">00</span>
+            <span class="label">Min</span>
+        </div>
+        <div class="box">
+            <span class="number" id="seconds">00</span>
+            <span class="label">Sek</span>
+        </div>
+    </div>
+
+    <div class="message" id="message">Jede Sekunde zählt.</div>
+</div>
+
+<script>
+    // ZIEL: 1. Juli 2026, 19:00 Uhr (Mittwoch)
+    const zielDatum = new Date('2026-07-01T19:00:00').getTime();
+
+    function updateCountdown() {
+        const jetzt = new Date().getTime();
+        const differenz = zielDatum - jetzt;
+
+        // Wenn das Ziel erreicht oder überschritten ist
+        if (differenz <= 0) {
+            document.getElementById('days').innerText = "00";
+            document.getElementById('hours').innerText = "00";
+            document.getElementById('minutes').innerText = "00";
+            document.getElementById('seconds').innerText = "00";
+            document.getElementById('message').innerHTML = "Endlich ist es so weit! 💕";
+            clearInterval(intervall);
+            return;
+        }
+
+        // Zeitberechnungen
+        const tage = Math.floor(differenz / (1000 * 60 * 60 * 24));
+        const stunden = Math.floor((differenz % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minuten = Math.floor((differenz % (1000 * 60 * 60)) / (1000 * 60));
+        const sekunden = Math.floor((differenz % (1000 * 60)) / 1000);
+
+        // Werte in die HTML-Elemente schreiben (mit führender Null bei Zahlen < 10)
+        document.getElementById('days').innerText = tage < 10 ? '0' + tage : tage;
+        document.getElementById('hours').innerText = stunden < 10 ? '0' + stunden : stunden;
+        document.getElementById('minutes').innerText = minuten < 10 ? '0' + minuten : minuten;
+        document.getElementById('seconds').innerText = sekunden < 10 ? '0' + sekunden : sekunden;
+    }
+
+    // Den Countdown sofort einmal ausführen und danach jede Sekunde (1000ms) aktualisieren
+    updateCountdown();
+    const intervall = setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
